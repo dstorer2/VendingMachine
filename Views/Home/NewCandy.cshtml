@@ -1,0 +1,28 @@
+@model Candy
+
+<div class="text-center">
+    <form asp-controller="Home" asp-action="CreateCandy" method="post">
+        <div class="form-control">
+            <label asp-for="Name"></label>
+            <input asp-for="Name">
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div class="form-control">
+            <label asp-for="Price"></label>
+            <input asp-for="Price">
+            <span asp-validation-for="Price"></span>
+        </div>
+        <div class="form-control">
+            <label asp-for="WrapperColor"></label>
+            <input asp-for="WrapperColor">
+            <span asp-validation-for="WrapperColor"></span>
+        </div>
+        <div class="form-control">
+            <label asp-for="Qty"></label>
+            <input asp-for="Qty">
+            <span asp-validation-for="Qty"></span>
+        </div>
+        <input type="hidden" value="@ViewBag.ShelfId" asp-for="ShelfId"/>
+        <input type="submit">
+    </form>
+</div>

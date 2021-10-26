@@ -1,0 +1,56 @@
+<div class="text-center">
+    <h1>Inventory Report</h1>
+    <button class="btn btn-primary" href="/" onclick="load(event)">Home</button>
+    <div class="dataArea">
+        <table class="table table-striped">
+            <h4>Candies on the Sour shelf:</h4>
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Wrapper Color</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Qty in Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var sourCandy in ViewBag.Sour.ShelvedCandyBars)
+                {
+                    <tr>
+                        <th>@sourCandy.Name</th>
+                        <td>@sourCandy.WrapperColor</td>
+                        <td>@sourCandy.Price</td>
+                        <td>@sourCandy.Qty</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="dataArea">
+        <h4>Most common wrapper color found in the trash: @ViewBag.CommonWrapper.WrapperColor</h4>
+    </div>
+    <div class="dataArea">
+        <h4>Candies in stock per shelf:</h4>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Shelf Flavor</th>
+                    <th scope="col">Candies in stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var shelf in ViewBag.AllShelves)
+                {
+                    int totalCandyCount = 0;
+                    foreach(var candy in shelf.ShelvedCandyBars)
+                    {
+                        totalCandyCount += candy.Qty;
+                    }
+                    <tr>
+                        <td>@shelf.Flavor</td>
+                        <td>@totalCandyCount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="text-center">
+    <div>
+        @foreach(var shelf in ViewBag.Shelves)
+        {
+            <h1>@shelf.Flavor:</h1>
+            <ul>
+            @if(shelf.ShelvedCandyBars.Count > 0){
+                    @foreach (var candy in shelf.ShelvedCandyBars)
+                    {
+                        <li >@candy.Name -- Quantity in stock: @candy.Qty<button value="@candy.Qty" class="btn btn-danger btn-sm" href="/candy/@candy.CandyId/decrease" onclick="removeCandy(event)">-</button> <button value="@candy.Qty" onclick="addCandy(event)" class="btn btn-success btn-sm" href="/candy/@candy.CandyId/increase">+</button></li>
+                    }
+            } else {
+                <li>No candy on this shelf</li>
+            }
+            </ul>
+            @if(shelf.ShelvedCandyBars.Count < 4)
+            {
+                <button class="btn btn-warning btn-sm" href="inventory/@shelf.ShelfId/new" onclick="load(event)">Add New Candy</button>
+            }
+
+        }
+    </div>
+    <div> </div>
+    <button class="btn btn-sm btn-primary" href="/" onclick="load(event)">Home</button>
+</div>

@@ -1,0 +1,132 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@* Stored price in cents. Need to convert to dollar format for vending machine display*@
+@functions{
+    public string getPrice(int price){
+        decimal y = (decimal)price;
+        decimal x = Decimal.Round(y/100, 2);
+        return x.ToString("0.00");
+    }
+}
+
+@* Main page to display vending machine and interface.  *@
+
+<div class="text-center">
+    <h1>Vending Machine</h1>
+    <div class="buttons">
+        <button class="btn btn-primary btn-lg" href="/inventory" onclick="load(event)">Stock Machine</button>
+        <button class="btn btn-secondary btn-lg" href="/report" onclick="load(event)">View Report</button>
+    </div>
+    <div class="canvas">
+        <div class="machine">
+            <div class="top">
+                <div class="glass">
+                    @* display each shelf *@
+                    @foreach(var shelf in ViewBag.ShelvesWithCandies)
+                    {
+                        <div class="shelf">
+                            @{
+                                int i = 1;
+                                foreach(var candy in shelf.ShelvedCandyBars)
+                                {
+                                    if(candy.Qty >0)
+                                    {
+                                        @* "physical" candy *@
+                                        <div class="candyPackage">
+                                            <div>@candy.Name</div>
+                                            <div id="@candy.CandyId">$@getPrice(candy.Price)</div>
+                                            <div class="index" >@shelf.ShelfIndex@i</div>
+                                        </div>
+                                        i++;
+                                    }else{
+                                        <div class="outOfStock">
+                                            <div>Out of Stock!</div>
+                                        </div>
+                                        i++;
+                                    }
+                                    
+                                }
+                                while(i <= 4)
+                                {
+                                    <div class="outOfStock">
+                                        <div>Out of Stock!</div>
+                                    </div>
+                                    i++;
+                                }
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="keyPad">
+                    <div class="keyRow">
+                        <div class="key"></div>
+                        <div class="key"></div>
+                        <div class="key"></div>
+                        <div class="key"></div>
+                    </div>
+                    <div class="keyRow">
+                        <div class="key"></div>
+                        <div class="key"></div>
+                        <div class="key"></div>
+                        <div class="key"></div>
+                    </div>
+                    <div class="keyRow">
+                        <div class="key"></div>
+                        <div class="key"></div>
+                        <div class="key"></div>
+                        <div class="key"></div>
+                    </div>
+                    <div class="keyRow">
+                        <div class="key"></div>
+                        <div class="key"></div>
+                        <div class="key"></div>
+                        <div class="key"></div>
+                    </div>
+                    <div class="slot"></div>
+                </div>
+            </div>
+            <div class="dispenser"></div>
+        </div>
+        <div class="interface">
+            <h3>Amount Deposited: </h3>
+            <button id="depositAmount" value="0">$0.00</button>
+            <div class="coinInsert">
+                <h3>Deposit some coins:</h3>
+                <button onclick="depositCoin(event)" class="btn btn-secondary" value="1">1¢</button>
+                <button onclick="depositCoin(event)" class="btn btn-secondary" value="5">5¢</button>
+                <button onclick="depositCoin(event)" class="btn btn-secondary" value="10">10¢</button>
+                <button onclick="depositCoin(event)" class="btn btn-secondary" value="25">25¢</button>
+            </div>
+            @* Some buttons to select which candy you want.  *@
+            @* Onclick will check to see if that item is in stock and whether you've inserted enough coins *@
+            <h3>Select a candy:</h3>
+            <div class="pickCandyButtons">
+                @foreach(var shelf in ViewBag.ShelvesWithCandies)
+                {
+                    <div class="pickCandyRow">
+                        @{
+                            int i = 1;
+                            foreach(var candy in shelf.ShelvedCandyBars)
+                            {
+                                @* reference buttons *@
+                                <div class="pickCandyButton">
+                                    <button class="index" dong="dongus" onclick="buyCandy(event)"  value="@candy.CandyId" href="/candy/@candy.CandyId">@shelf.ShelfIndex@i</button>
+                                </div>
+                                i++;
+                            }
+                            while(i <= 4)
+                            {
+                                <div class="pickCandyButton">
+                                    <button class="index" onclick="outOfStockAlert()">@shelf.ShelfIndex@i</button>
+                                </div>
+                                i++;
+                            }
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
